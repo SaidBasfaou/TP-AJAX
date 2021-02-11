@@ -1,0 +1,48 @@
+<html>
+<head>
+<script>
+function showHint() {
+  let fname=document.getElementById("fname");
+  let div1=document.getElementById("div1");
+  let dt=document.getElementById("com");
+  let str=fname.value;
+
+  if (str.length == 0) {
+    div1.innerHTML = "";
+    return;
+  } else {
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        let s=this.responseText;//string
+        let obj=JSON.parse(s);
+        console.log(obj)
+        let i=0;
+        div1.innerHTML="";
+        for(i=0;i<=obj.length-1;i++){
+          div1.innerHTML +=",<p style='color:red'>"+obj[i].nom2+"</p>";
+        }
+        
+      }
+    };
+    xmlhttp.open("GET", "http://localhost:80/site_ajax/testDatabase.php?q=" + str, true);
+    xmlhttp.send();
+  }
+}
+</script>
+</head>
+<body>
+
+<p><b>taper une ville</b></p>
+<form action="">
+  <label for="fname">villes:</label>
+  <input type="text" list="com" id="fname" name="fname" 
+  onkeyup="showHint()">
+</form>
+<p>proposition: <div id="div1"></div></p>
+<datalist id="com">
+   <option value="Edge" />
+</datalist>
+</body>
+</html>
